@@ -1,19 +1,19 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc, query, onSnapshot, deleteDoc } from 'firebase/firestore';
-import { APIKEY, AUTHDOMAIN, PROJECTID, STORAGEBUCKET, MESSAGINGSENDERID, APPID } from "@env";
+require("dotenv").config();
 
 const firebaseConfig = {
-  apiKey: APIKEY,
-  authDomain: AUTHDOMAIN,
-  projectId: PROJECTID,
-  storageBucket: STORAGEBUCKET,
-  messagingSenderId: MESSAGINGSENDERID,
-  appId: APPID
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID,
 };
 
-initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
-const firestore = getFirestore();
+const firestore = getFirestore(app);
 const LISTITEMS = 'listitems';
 
 export { firestore, collection, addDoc, query, onSnapshot, deleteDoc, LISTITEMS };
