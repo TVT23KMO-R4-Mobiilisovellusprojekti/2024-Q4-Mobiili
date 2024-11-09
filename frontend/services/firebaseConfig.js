@@ -1,6 +1,12 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, query, onSnapshot, deleteDoc } from 'firebase/firestore';
-require("dotenv").config();
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  query,
+  onSnapshot,
+  deleteDoc,
+} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -14,6 +20,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 const firestore = getFirestore(app);
-const LISTITEMS = 'listitems';
+const LISTITEMS = "listitems";
 
-export { firestore, collection, addDoc, query, onSnapshot, deleteDoc, LISTITEMS };
+export {
+  firestore,
+  collection,
+  addDoc,
+  query,
+  onSnapshot,
+  deleteDoc,
+  LISTITEMS,
+};
