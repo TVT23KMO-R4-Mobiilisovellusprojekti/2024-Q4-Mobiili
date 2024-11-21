@@ -63,7 +63,6 @@ export const AllItems = () => {
 
     return (
         <View style={{ flex: 1, padding: 8 }}>
-            <Heading title="Kaikki ilmoitukset" />
 
             {items.map((item) => (
                 <View key={item.id} style={globalStyles.itemContainer}>

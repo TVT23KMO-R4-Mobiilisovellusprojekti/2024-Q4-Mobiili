@@ -63,11 +63,12 @@ const GlobalButtons = StyleSheet.create({
     
       buttonCancel: {
         backgroundColor: '#c3c3c3', 
-        borderRadius: 22,
+        borderRadius: 14,
         borderColor: '#3c3c3c',
         borderWidth: 1,
         borderStyle: 'dashed',
-        padding: 16,
+        padding: 9,
+        margin: 8,
         width: '35%',
         position: 'relative',
       },
@@ -105,13 +106,13 @@ const GlobalButtons = StyleSheet.create({
 
       buttonSave: {
         backgroundColor: '#186b11', 
-        borderRadius: 22,
+        borderRadius: 14,
         borderColor: '#0f4f1a',
         borderWidth: 1,
         borderStyle: 'dashed',
-        padding: 16,
+        padding: 9,
         marginRight: 8,
-        //margin: 8,
+        margin: 8,
         width: '35%',
       },
 

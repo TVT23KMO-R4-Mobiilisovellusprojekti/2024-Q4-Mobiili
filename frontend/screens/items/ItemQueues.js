@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ButtonCancel, ButtonContinue } from '../../components/Buttons';
+import { ButtonCancel, ButtonSave } from '../../components/Buttons';
 import { Text, View, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { BasicSection } from '../../components/CommonComponents';
@@ -67,7 +67,7 @@ export const ItemJoinOnQueue = ({ itemId }) => {
           isOnQueue ? (
             <ButtonCancel title="Peruuta varaus" onPress={() => deleteFromQueue(itemId)} />
           ) : (
-            <ButtonContinue title="Varaa" onPress={() => saveForQueue(itemId)} />
+            <ButtonSave title="Varaa" onPress={() => saveForQueue(itemId)} />
           )
           
         )}
