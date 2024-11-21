@@ -7,10 +7,7 @@ import {
   MessagingSystem,
   AccountSystem,
 } from "./FindUser";
-import {
-  NavigateToThisUsersItems,
-  NavigateToThisUsersQueue,
-} from "../items/FindItems";
+
 import {
   BasicsOfSecuringThisAccount,
   BasicsOfGettingAnAccount,
@@ -62,8 +59,8 @@ export const AccountLoggedIn = () => {
         </Text>
       </BasicSection>
       <MessagingSystem />
-      <NavigateToThisUsersItems />
-      <NavigateToThisUsersQueue />
+      {/*<NavigateToThisUsersItems />*/}
+      {/*<NavigateToThisUsersQueue />*/}
       <AccountSystem />
       <LogoutFromThisUser />
     </ScrollView>
