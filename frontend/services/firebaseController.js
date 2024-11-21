@@ -6,19 +6,19 @@ import {
   getDocs, 
   deleteDoc, 
   doc,
+  setDoc,
   getDoc
 } from 'firebase/firestore';
 
 import { getAuth } from 'firebase/auth';
 import { firestore } from './firebaseConfig'; 
 import { serverTimestamp } from 'firebase/firestore';
-import { take } from 'lodash';
 
 // Tallennetaan käyttäjätunnus Firestoreen
 export const  saveUserToFirestore = async (uid, username, email) => {
 
     try {
-      await addDoc(collection(firestore, 'users'), {
+      await setDoc(doc(firestore, "users", uid), {
         username,
         email: email.toLowerCase(),
         uid,
@@ -140,6 +140,31 @@ export const deleteItemFromFirestore = async (itemId) => {
     console.log(`Item ${itemId} poistettu Firestoresta.`);
   } catch (error) {
     console.error('Virhe poistettaessa itemiä Firestoresta:', error);
+    throw error;
+  }
+};
+
+/**
+ * retrieves user data from a Firestore database.
+ *
+ * takes a user ID / document ID as a parameter, fetches the document from
+ * "users" collection, and returns user data if the
+ * document exists or null if not
+ *
+ * function logs the error message and rethrows the error if there is an issue 
+ *
+ * @param {string} uid - The unique identifier of the user / document ID
+ * @returns {Promise<Object|null>} A promise that resolves to the user data
+ *                                 object if found, or null if not found.
+ * @throws throws an error if there is an issue fetching data from Firestore
+ */
+export const getUserData = async (uid) => {
+  try {
+    const userRef = doc(firestore, "users", uid);
+    const userSnapshot = await getDoc(userRef);
+    return userSnapshot.exists() ? userSnapshot.data() : null;
+  } catch (error) {
+    console.error("Virhe haettaessa käyttäjätietoja Firestoresta:", error);
     throw error;
   }
 };
