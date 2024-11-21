@@ -18,18 +18,15 @@ import { getAuthenticatedUserData } from './firestoreUsers';
 import { get, last, take } from 'lodash';
 import { getAuth } from 'firebase/auth';
 
-    export const addItemToFirestore = async (itemname, itemdescription, postalcode, city ) => {
-        
-        getAuthenticatedUserData();  
+    export const addItemToFirestore = async (uid, itemname, itemdescription, postalcode, city ) => {
 
         if (!itemname || !itemdescription || !postalcode || !city) {
             console.error('Virhe: Yksi tai useampi kenttä on tyhjä!');
             throw new Error('Täytä puuttuvat kentät.');
         }
 
-        try {
-            const uid = getAuthenticatedUserData().uid;
-            const giverRef = doc(firestore, 'users', getAuthenticatedUserData().uid);
+        try {;
+            const giverRef = doc(firestore, 'users', uid);
         
             const itemData = {
             itemname,
@@ -103,7 +100,7 @@ import { getAuth } from 'firebase/auth';
     };
 
     export const getCurrentUserItems = async (lastDoc, pageSize) => {
-        const uid = getAuthenticatedUserData().uid;
+        //const uid = getAuthenticatedUserData().uid;
         return paginateItems(lastDoc, pageSize, () => where('giverid', '==', doc(firestore, 'users', uid)));
     };
     

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { addItemToFirestore } from '../../services/firestoreItems.js';
 import { Heading } from '../../components/CommonComponents';
 import { ButtonAdd } from '../../components/Buttons';
@@ -6,6 +6,7 @@ import { View, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import globalStyles from "../../assets/styles/Styles.js";
 import Toast from 'react-native-toast-message';
+import { AuthenticationContext } from "../../context/AuthenticationContext";
 
 export const AddItem = () => {
     const [itemname, setItemname] = useState('');
@@ -13,11 +14,12 @@ export const AddItem = () => {
     const [postalcode, setPostalcode] = useState('');
     const [city, setCity] = useState('');
     const navigation = useNavigation();
-
+    const authState = useContext(AuthenticationContext);
+    
     const handleAddItem = async () => {
     
         try {
-        const response = await addItemToFirestore(itemname, itemdescription, postalcode, city);
+        const response = await addItemToFirestore(authState.user.id, itemname, itemdescription, postalcode, city);
         console.log('Add item response:', response);
         Toast.show({ type: 'success', text1: 'Julkaisu lisätty!',  });
     

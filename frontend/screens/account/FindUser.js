@@ -16,7 +16,7 @@ import { deleteUserDataFromFirestore } from "../../services/firestoreUsers.js";
 import { signOut } from "firebase/auth";
 
 export const DeleteAccountOfThisUser = () => {
-  const { setAuthState } = useContext(AuthenticationContext);
+  const authState = useContext(AuthenticationContext);
   const [isDeletingThisAccount, setIsDeletingThisAccount ] = useState(false);
   const navigation = useNavigation();
 
@@ -40,7 +40,7 @@ export const DeleteAccountOfThisUser = () => {
   const handleDeleteUser = async () => {
     try {
       await userDelete();
-      setAuthState(null);
+      authState(null);
       navigation.navigate("Home");
       Alert.alert("Tilin poisto onnistui");
     } catch (error) {
@@ -102,16 +102,14 @@ export const DeleteAccountOfThisUser = () => {
 };
 
 export const LogoutFromThisUser = () => {
-  const { authState, setAuthState } = useContext(AuthenticationContext);
-  const { userid, accessToken } = authState;
-  const data = authState;
+  const authState = useContext(AuthenticationContext);
   const navigation = useNavigation();
 
   const handleLogout = async () => {
     try {
 
       console.log(`UID: ${data.user.uid} uloskirjautui`);
-      setAuthState(null);
+      authState(null);
       await auth.signOut();
       navigation.navigate("AccountMain");
     } catch (error) {

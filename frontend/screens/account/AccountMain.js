@@ -3,7 +3,7 @@ import { AccountLoggedIn, AccountLoggedOut } from './AccountComponents';
 import { AuthenticationContext } from "../../context/AuthenticationContext";
 
 const AccountMain = () => {
-    const {authState} = useContext(AuthenticationContext);
+    const authState = useContext(AuthenticationContext);
 
     return (
     <>

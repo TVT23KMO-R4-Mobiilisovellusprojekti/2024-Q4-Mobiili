@@ -7,7 +7,7 @@ import { Register } from "../login/Register";
 import { auth } from '../../services/firebaseConfig';
 
 const Home = () => {
-    const { authState } = useContext(AuthenticationContext);
+    const  authState  = useContext(AuthenticationContext);
     const [visibleSection, setVisibleSection] = useState(null);
 
     const toggleSection = (sectionName) => {

@@ -3,7 +3,7 @@ import { ItemsLoggedIn, ItemsLoggedOut } from './ItemComponents';
 import { AuthenticationContext } from "../../context/AuthenticationContext";
 
 const ItemsMain = () => {
-    const {authState} = useContext(AuthenticationContext);
+    const authState = useContext(AuthenticationContext);
 
     return (
     <>

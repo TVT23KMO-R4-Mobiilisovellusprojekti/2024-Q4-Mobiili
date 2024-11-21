@@ -24,4 +24,5 @@ import {
   const firestore = getFirestore(app);
   export const auth = getAuth(app); 
   
+  
   export { app, firestore };

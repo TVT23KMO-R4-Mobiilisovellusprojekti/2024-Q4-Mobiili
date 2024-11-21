@@ -1,7 +1,7 @@
-import React, { useContext, useState } from "react";
-import { AuthenticationContext } from "../../context/AuthenticationContext";
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../services/firebaseConfig";
 import { Alert, View } from "react-native";
 import Toast from "react-native-toast-message";
 import {
@@ -15,16 +15,13 @@ import { ButtonContinue } from "../../components/Buttons";
 export const Login = ({ isVisible, toggleVisible }) => {
   const [usermail, setLoginUsername] = useState("");
   const [password, setLoginPassword] = useState("");
-  const { setAuthState } = useContext(AuthenticationContext);
   const navigation = useNavigation();
 
   const handleLogin = async () => {
-    const auth = getAuth();
     try {
       const data = await signInWithEmailAndPassword(auth, usermail, password);
       if (data) {
-        console.log(`UID: ${data.user.uid} kirjautui`);
-        setAuthState(data);
+        // konteksti hoitaa tilan päivityksen automaattisesti
       } else {
         Alert.alert(
           "Kirjautuminen epäonnistui",

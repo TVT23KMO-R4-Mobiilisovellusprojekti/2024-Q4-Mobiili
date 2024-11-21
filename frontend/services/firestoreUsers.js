@@ -5,24 +5,39 @@ import {
     where, 
     getDocs, 
     deleteDoc, 
-    doc
+    doc,
+    setDoc,
+    getDoc
 } from 'firebase/firestore';
 
 import { getAuth } from 'firebase/auth';
 import { firestore } from './firebaseConfig'; 
 import { get, last, take } from 'lodash';
 
+/*
     export const getAuthenticatedUserData = () => {
         const auth = getAuth(); 
         const user = auth.currentUser; 
 
         return user;
     };
+*/
+
+    export const  getAuthenticatedUserData = async (uid) => {
+        try {
+            const userRef = doc(firestore, "users", uid);
+            const userSnapshot = await getDoc(userRef);
+            return userSnapshot.exists() ? userSnapshot.data() : null;
+        } catch (error) {
+            console.error("Virhe haettaessa käyttäjätietoja Firestoresta:", error);
+            throw error;
+        }
+    };
 
     export const  saveUserToFirestore = async (uid, username, email) => {
             
         try {
-            await addDoc(collection(firestore, 'users'), {
+            await setDoc(doc(firestore, "users", uid), {
             username,
             email: email.toLowerCase(),
             uid,

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../services/firebaseConfig";
 import Toast from "react-native-toast-message";
-import { saveUserToFirestore } from "../../services/firestoreUsers";
+import { saveUserToFirestore } from "../../services/firebaseController";
 import { Alert } from "react-native";
 import {
   AccountSection,
@@ -17,7 +18,6 @@ export const Register = ({ isVisible, toggleVisible }) => {
   const [registerEmail, setRegisterEmail] = useState("");
 
   const userRegister = async (email, password, registerUsername) => {
-    const auth = getAuth();
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,

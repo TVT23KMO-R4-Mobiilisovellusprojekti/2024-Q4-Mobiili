@@ -8,7 +8,7 @@ import { AuthenticationContext } from "../context/AuthenticationContext";
 const CustomTopBar = () => {
   const navigation = useNavigation();
   const [menuVisible, setMenuVisible] = useState(false);
-  const { authState } = useContext(AuthenticationContext);
+  const authState = useContext(AuthenticationContext);
 
   const [loaded] = useFonts({
     Chewy: require('../assets/fonts/ChewyRegular.ttf'),

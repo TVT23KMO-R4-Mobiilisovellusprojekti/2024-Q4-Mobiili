@@ -21,7 +21,7 @@ export const AccountLoggedOut = () => {
 };
 
 export const AccountLoggedIn = () => {
-  const {authState} = useContext(AuthenticationContext);
+  const authState = useContext(AuthenticationContext);
 
   if (!authState) {
     return <Text>No user data found.</Text>;
@@ -40,7 +40,7 @@ export const AccountLoggedIn = () => {
 };
 
 export const AccountMaintain = () => {
-  const {authState} = useContext(AuthenticationContext);
+  const authState = useContext(AuthenticationContext);
 
   if (!authState) {
     return <Text>No user data found.</Text>;
