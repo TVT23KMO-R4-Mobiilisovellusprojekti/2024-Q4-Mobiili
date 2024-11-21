@@ -55,7 +55,6 @@ import { get, last, take } from 'lodash';
             const collectionsToClean = ["items", "users"];
 
             for (const collectionName of collectionsToClean) {
-                const uid = getAuthenticatedUserData().uid;
                 const userRef = collection(firestore, collectionName);
                 const giverRef = doc(firestore, 'users', uid);
 

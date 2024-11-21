@@ -14,7 +14,6 @@ import {
 } from 'firebase/firestore';
 
 import { firestore } from './firebaseConfig'; 
-import { getAuthenticatedUserData } from './firestoreUsers';
 import { get, last, take } from 'lodash';
 import { getAuth } from 'firebase/auth';
 
@@ -99,8 +98,7 @@ import { getAuth } from 'firebase/auth';
         }
     };
 
-    export const getCurrentUserItems = async (lastDoc, pageSize) => {
-        //const uid = getAuthenticatedUserData().uid;
+    export const getCurrentUserItems = async (uid, lastDoc, pageSize) => {
         return paginateItems(lastDoc, pageSize, () => where('giverid', '==', doc(firestore, 'users', uid)));
     };
     
@@ -126,12 +124,11 @@ import { getAuth } from 'firebase/auth';
         }
     };
 
-    export const deleteItemFromFirestore = async (itemId) => {
+    export const deleteItemFromFirestore = async (uid, itemId) => {
         try {
-            const uid = getAuthenticatedUserData().uid;
             const itemRef = doc(firestore, 'items', itemId);
 
-            if (!checkIfMyItem(itemId)) {
+            if (!checkIfMyItem(uid, itemId)) {
                 console.error('Virhe: Et voi poistaa toisen tuotteita.');
                 throw new Error('Et voi poistaa toisten tuotteita.');
             }
@@ -145,9 +142,8 @@ import { getAuth } from 'firebase/auth';
         }
       };
 
-      export const checkIfMyItem = async (itemId) => {
+      export const checkIfMyItem = async (uid, itemId) => {
         try {
-            const uid = getAuthenticatedUserData().uid; 
             const itemData = await getItemFromFirestore(itemId); 
             const { giverRef } = itemData; 
 

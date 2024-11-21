@@ -13,7 +13,7 @@ import { AuthenticationContext } from "../../context/AuthenticationContext";
 import globalStyles from "../../assets/styles/Styles.js";
 import Toast from "react-native-toast-message";
 import { deleteUserDataFromFirestore } from "../../services/firestoreUsers.js";
-import { signOut } from "firebase/auth";
+import { signOut, deleteUser } from "firebase/auth";
 
 export const DeleteAccountOfThisUser = () => {
   const authState = useContext(AuthenticationContext);
@@ -22,11 +22,10 @@ export const DeleteAccountOfThisUser = () => {
 
   const userDelete = async () => {
     try {
-      const user = auth.currentUser;
 
-      await deleteUserDataFromFirestore(user.uid);
-
-      await user.delete();
+      await deleteUserDataFromFirestore(authState.user.id);
+      const currentUser = auth.currentUser;
+      await deleteUser(currentUser);
       console.log("Käyttäjän autentikointitili poistettu");
     } catch (error) {
       Toast.show({
@@ -40,7 +39,6 @@ export const DeleteAccountOfThisUser = () => {
   const handleDeleteUser = async () => {
     try {
       await userDelete();
-      authState(null);
       navigation.navigate("Home");
       Alert.alert("Tilin poisto onnistui");
     } catch (error) {
@@ -56,10 +54,6 @@ export const DeleteAccountOfThisUser = () => {
     handleDeleteUser();
   };
 
-  const handleDeletingThisAccountCancel = () => {
-    setIsDeletingThisAccount(false);
-  };
-
   return (
     <>
       <Heading title="Poista tili" />
@@ -69,7 +63,6 @@ export const DeleteAccountOfThisUser = () => {
          <BasicSection>
            Mikäli poistat käyttäjätilisi palvelusta, sen kaikki tiedot
            poistetaan. Vahvistusta kysytään kerran painaessasi "Poista tili".
-           {"\n\n"}
          </BasicSection>
          <View style={globalStyles.viewButtons}>
            <ButtonDelete
@@ -102,15 +95,14 @@ export const DeleteAccountOfThisUser = () => {
 };
 
 export const LogoutFromThisUser = () => {
-  const authState = useContext(AuthenticationContext);
+
   const navigation = useNavigation();
+  const authState = useContext(AuthenticationContext);
 
   const handleLogout = async () => {
     try {
-
-      console.log(`UID: ${data.user.uid} uloskirjautui`);
-      authState(null);
-      await auth.signOut();
+      await signOut(auth); 
+      console.log(`UID: ${authState.user.id} uloskirjautui`);
       navigation.navigate("AccountMain");
     } catch (error) {
       console.error("Virhe uloskirjautumisessa:", error);

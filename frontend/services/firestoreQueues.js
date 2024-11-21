@@ -10,7 +10,6 @@ import {
     serverTimestamp,
 } from 'firebase/firestore';
 import { firestore } from './firebaseConfig'; 
-import { getAuthenticatedUserData } from './firestoreUsers';
 import { checkIfMyItem, paginateItems } from './firestoreItems';
 import { get, last, take } from 'lodash';
     
@@ -19,9 +18,8 @@ import { get, last, take } from 'lodash';
         return paginateItems(lastDoc, pageSize, () => where('takerId', '==', doc(firestore, 'users', uid)));
     };
 
-    export const addTakerToItem = async (itemId) => {
+    export const addTakerToItem = async (uid, itemId) => {
         try {
-        const uid = getAuthenticatedUserData().uid;
         const itemRef = doc(firestore, 'items', itemId);
     
         const itemSnapshot = await getDoc(itemRef);
@@ -54,9 +52,8 @@ import { get, last, take } from 'lodash';
         }
     };
 
-    export const deleteTakerFromItem = async (itemId) => {
+    export const deleteTakerFromItem = async (uid, itemId) => {
         try {
-            const uid = getAuthenticatedUserData().uid;
             const userRef = doc(firestore, "users", uid); 
             const itemRef = doc(firestore, "items", itemId); 
             const takersRef = collection(itemRef, "takers"); 
@@ -79,9 +76,8 @@ import { get, last, take } from 'lodash';
         }
     };
 
-    export const getCurrentUserQueues = async (itemId) => {
+    export const getCurrentUserQueues = async (uid, itemId) => {
         try {
-            const uid = getAuthenticatedUserData().uid; 
             const itemRef = doc(firestore, "items", itemId);
             const takersRef = collection(itemRef, "takers");
 

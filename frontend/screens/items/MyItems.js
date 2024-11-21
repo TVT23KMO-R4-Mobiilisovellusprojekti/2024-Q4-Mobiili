@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { ButtonCancel, ButtonConfirm, ButtonDelete } from '../../components/Buttons';
 import { Text, View } from 'react-native';
 import { BasicSection } from '../../components/CommonComponents';
 import globalStyles from "../../assets/styles/Styles.js";
 import Toast from 'react-native-toast-message';
 import { deleteItemFromFirestore, getCurrentUserItems } from '../../services/firestoreItems.js';
+import { AuthenticationContext } from "../../context/AuthenticationContext";
 import { get, last } from 'lodash';
 
 export const MyItems = () => {
@@ -13,6 +14,7 @@ export const MyItems = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [activeToggleId, setActiveToggleId] = useState(null);
+    const authState = useContext(AuthenticationContext);
 
     const pageSize = 4;
 
@@ -20,7 +22,7 @@ export const MyItems = () => {
         const fetchItems = async () => {
             try {
                 
-                const { items: newItems, lastDoc: newLastDoc } = await getCurrentUserItems(lastDoc, pageSize);
+                const { items: newItems, lastDoc: newLastDoc } = await getCurrentUserItems(authState.user.id, lastDoc, pageSize);
                 setItems((prevItems) => [...prevItems, ...newItems]);
                 setLastDoc(newLastDoc);
 
@@ -36,7 +38,7 @@ export const MyItems = () => {
 
     const handleDelete = async (itemId) => {
         try {
-          await deleteItemFromFirestore(itemId); 
+          await deleteItemFromFirestore(authState.user.id, itemId); 
           setItems((prevItems) => prevItems.filter((item) => item.id !== itemId)); 
           console.log(`Item ${itemId} poistettu.`);
         } catch (error) {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { ButtonCancel, ButtonSave } from '../../components/Buttons';
 import { Text, View, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -12,15 +12,17 @@ import {
   getCurrentUserQueuesForItems, 
 } from '../../services/firestoreQueues.js';
 import { checkIfMyItem } from '../../services/firestoreItems.js';
+import { AuthenticationContext } from "../../context/AuthenticationContext";
 import { set } from 'lodash';
 
 export const ItemJoinOnQueue = ({ itemId }) => {
     const [isOnQueue, setIsOnQueue] = useState(false); 
     const [isMyItem, setIsMyItem] = useState(false);
+    const authState = useContext(AuthenticationContext);
   
     const checkIfOnQueue = async () => {
       try {
-        const result = await getCurrentUserQueues(itemId);
+        const result = await getCurrentUserQueues(authState.user.id, itemId);
         setIsOnQueue(result);
       } catch (error) {
         console.error('Virhe:', error);
@@ -29,7 +31,7 @@ export const ItemJoinOnQueue = ({ itemId }) => {
   
     const saveForQueue = async (itemId) => {
       try {
-        await addTakerToItem(itemId);
+        await addTakerToItem(authState.user.id, itemId);
         setIsOnQueue(true); 
       } catch (error) {
         Toast.show({ type: 'error', text1: 'Virhe varausta tehdessä', text2: error.message });
@@ -38,7 +40,7 @@ export const ItemJoinOnQueue = ({ itemId }) => {
   
     const deleteFromQueue = async (itemId) => {
       try {
-        await deleteTakerFromItem(itemId);
+        await deleteTakerFromItem(authState.user.id, itemId);
         setIsOnQueue(false);
       } catch (error) {
         Toast.show({ type: 'error', text1: 'Virhe jonosta poistettaessa', text2: error.message });
@@ -48,7 +50,7 @@ export const ItemJoinOnQueue = ({ itemId }) => {
     useEffect(() => {
       const fetchIsMyItem = async () => {
           try {
-              const result = await checkIfMyItem(itemId); 
+              const result = await checkIfMyItem(authState.user.id, itemId); 
               setIsMyItem(result);
           } catch (error) {
               console.error("Virhe omistajuuden tarkistuksessa:", error);
@@ -84,13 +86,14 @@ export const ItemQueues = () => {
   const [lastDoc, setLastDoc] = useState(null);
   const pageSize = 4;
   const navigation = useNavigation();
+  const authState = useContext(AuthenticationContext);
 
   useEffect(() => {
     const fetchQueues = async () => {
       if (!hasMore) return;
 
       try {
-        const { queues: newQueue, lastDoc: newLastDoc } = await getCurrentUserQueuesForItems(lastDoc, pageSize);
+        const { queues: newQueue, lastDoc: newLastDoc } = await getCurrentUserQueuesForItems(authState.user.id, lastDoc, pageSize);
         if (newQueue) {
           setQueue((prevQueue) => [...prevQueue, ...newQueue]);
           setLastDoc(newLastDoc);
