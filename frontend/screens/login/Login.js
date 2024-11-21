@@ -1,5 +1,4 @@
-import React, { useContext, useState } from "react";
-import { AuthenticationContext } from "../../context/AuthenticationContext";
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { Alert, View } from "react-native";
@@ -15,7 +14,6 @@ import { ButtonContinue } from "../../components/Buttons";
 export const Login = ({ isVisible, toggleVisible }) => {
   const [usermail, setLoginUsername] = useState("");
   const [password, setLoginPassword] = useState("");
-  const { setAuthState } = useContext(AuthenticationContext);
   const navigation = useNavigation();
 
   const handleLogin = async () => {
