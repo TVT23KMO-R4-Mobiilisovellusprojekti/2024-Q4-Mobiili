@@ -29,7 +29,6 @@ export const AuthenticationProvider = ({ children }) => {
         }
       }
       setLoading(false);
-      
     };
 
     loadUserData();

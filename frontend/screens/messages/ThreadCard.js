@@ -28,7 +28,7 @@ const ThreadCard = ({ thread }) => {
   const navigation = useNavigation();
 
   // sample authState for testing
-  const authState = {
+  const { authState } = {
     user: {
       id: "CzmNeYO7av152mqA9SHY",
       username: "testuser",
