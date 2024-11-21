@@ -11,13 +11,11 @@ import {
 } from 'firebase/firestore';
 import { firestore } from './firebaseConfig'; 
 import { getAuthenticatedUserData } from './firestoreUsers';
-import { paginateItems } from './firestoreItems';
+import { checkIfMyItem, paginateItems } from './firestoreItems';
 import { get, last, take } from 'lodash';
-
-// TAKERS & QUEUES
     
     export const getCurrentUserQueuesForItems = async (lastDoc, pageSize) => {
-        const uid = getAuthenticatedUserData().uid;
+        await checkIfMyItem();
         return paginateItems(lastDoc, pageSize, () => where('takerId', '==', doc(firestore, 'users', uid)));
     };
 
@@ -48,10 +46,10 @@ import { get, last, take } from 'lodash';
         };
     
         await addDoc(takersRef, takerData);
-        console.log('Taker lisätty tuotteelle:', itemId);
+        console.log(`UID: ${uid} varannut:`, itemId);
     
         } catch (error) {
-        console.error('Virhe lisättäessä varaajaa Firestoreen:', error);
+        console.error('Virhe lisättäessä varausta:', error);
         throw error;
         }
     };
@@ -67,16 +65,16 @@ import { get, last, take } from 'lodash';
             const querySnapshot = await getDocs(q);
     
             if (querySnapshot.empty) {
-                console.log("Käyttäjää ei löytynyt jonosta.");
+                console.log("Käyttäjää ei löydy jonosta.");
                 return; 
             }
 
             for (const takerDoc of querySnapshot.docs) {
                 await deleteDoc(takerDoc.ref);
-                console.log("Poistettu varaaja dokumentista:", takerDoc.id);
+                console.log(`UID: ${uid} poistanut varauksen:`, takerDoc.id);
             }
         } catch (error) {
-            console.error("Virhe poistettaessa varaajaa Firestoresta:", error);
+            console.error("Virhe poistettaessa varausta:", error);
             throw error;
         }
     };
@@ -92,11 +90,10 @@ import { get, last, take } from 'lodash';
             const querySnapshot = await getDocs(q);
 
             if (!querySnapshot.empty) {
-                console.log("Käyttäjä on jo jonossa:", uid);
+                console.log(`UID: ${uid} varannut: ${itemId}`);
                 return true;
             }
 
-            console.log("Käyttäjä ei ole jonossa:", uid);
             return false; 
         } catch (error) {
             console.error("Virhe jonotiedon tarkistuksessa:", error);

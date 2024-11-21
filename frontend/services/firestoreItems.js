@@ -16,8 +16,7 @@ import {
 import { firestore } from './firebaseConfig'; 
 import { getAuthenticatedUserData } from './firestoreUsers';
 import { get, last, take } from 'lodash';
-
-// ITEMS
+import { getAuth } from 'firebase/auth';
 
     export const addItemToFirestore = async (itemname, itemdescription, postalcode, city ) => {
         
@@ -29,7 +28,7 @@ import { get, last, take } from 'lodash';
         }
 
         try {
-            
+            const uid = getAuthenticatedUserData().uid;
             const giverRef = doc(firestore, 'users', getAuthenticatedUserData().uid);
         
             const itemData = {
@@ -43,15 +42,15 @@ import { get, last, take } from 'lodash';
             };
         
             const docRef = await addDoc(collection(firestore, 'items'), itemData);
-            console.log('Tavara lisätty Firestoreen, ID:', docRef.id);
+            console.log(`UID: ${uid} lisännyt:`, docRef.id);
         
             const takersRef = collection(firestore, `items/${docRef.id}/takers`);
             await addDoc(takersRef, { placeholder: true });
-            console.log('Alikokoelma "takers" luotu tuotteelle:', docRef.id);
+            console.log(`Lisätty alikokoelma (takers) tuotteelle ${docRef.id}`);
         
             return docRef.id;
         } catch (error) {
-            console.error('Virhe lisättäessä tavaraa Firestoreen:', error);
+            console.error('Virhe lisättäessä tuotetta:', error);
             throw error;
         }
     };
@@ -68,7 +67,7 @@ import { get, last, take } from 'lodash';
         
             return items;
         } catch (error) {
-            console.error('Virhe haettaessa tavaroita Firestoresta:', error);
+            console.error('Virhe haettaessa tuotteita:', error);
             throw error;
         }
     };
@@ -94,11 +93,11 @@ import { get, last, take } from 'lodash';
             itemsSnapshot.forEach((doc) => {
                 items.push({ id: doc.id, ...doc.data() });
             });
-    
+
             const lastVisibleDoc = itemsSnapshot.docs[itemsSnapshot.docs.length - 1];
             return { items, lastDoc: lastVisibleDoc };
         } catch (error) {
-            console.error('Virhe paginoidessa tavaroita:', error);
+            console.error('Paginointivirhe:', error);
             throw error;
         }
     };
@@ -125,13 +124,14 @@ import { get, last, take } from 'lodash';
             }
 
         } catch (error) {
-            console.error('Virhe haettaessa tavaraa Firestoresta:', error);
+            console.error('Virhe haettaessa tuotetta:', error);
             throw error;
         }
     };
 
     export const deleteItemFromFirestore = async (itemId) => {
         try {
+            const uid = getAuthenticatedUserData().uid;
             const itemRef = doc(firestore, 'items', itemId);
 
             if (!checkIfMyItem(itemId)) {
@@ -140,7 +140,7 @@ import { get, last, take } from 'lodash';
             }
 
             await deleteDoc(itemRef);
-            console.log(`Item ${itemId} poistettu Firestoresta.`);
+            console.log(`UID: ${uid} poistanut: ${itemId}`);
 
         } catch (error) {
             console.error('Virhe poistettaessa itemiä Firestoresta:', error);
@@ -148,13 +148,11 @@ import { get, last, take } from 'lodash';
         }
       };
 
-    export const checkIfMyItem = async (itemId) => {
+      export const checkIfMyItem = async (itemId) => {
         try {
             const uid = getAuthenticatedUserData().uid; 
             const itemData = await getItemFromFirestore(itemId); 
             const { giverRef } = itemData; 
-
-            console.log("GiverRef:", giverRef.id);
 
             if (giverRef.id === uid) {
                 return true; 

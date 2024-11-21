@@ -12,19 +12,9 @@ import { getAuth } from 'firebase/auth';
 import { firestore } from './firebaseConfig'; 
 import { get, last, take } from 'lodash';
 
-// USERS
-
     export const getAuthenticatedUserData = () => {
         const auth = getAuth(); 
         const user = auth.currentUser; 
-    
-        if (user) {
-        console.log('Käyttäjän UID:', user.uid);
-        console.log('Käyttäjän sähköposti:', user.email);
-        console.log('Käyttäjän nimi:', user.displayName);
-        } else {
-        console.error('Ei ole kirjautunutta käyttäjää');
-        }
 
         return user;
     };
@@ -37,9 +27,9 @@ import { get, last, take } from 'lodash';
             email: email.toLowerCase(),
             uid,
             });
-            console.log('Käyttäjä lisätty Firestoreen');
+            console.log(`Käyttäjä ${username} , ${uid} lisätty`);
         } catch (error) {
-            console.error('Virhe lisättäessä käyttäjää Firestoreen:', error);
+            console.error('Virhe lisättäessä käyttäjää:', error);
             throw error;
         }
     };
@@ -50,6 +40,7 @@ import { get, last, take } from 'lodash';
             const collectionsToClean = ["items", "users"];
 
             for (const collectionName of collectionsToClean) {
+                const uid = getAuthenticatedUserData().uid;
                 const userRef = collection(firestore, collectionName);
                 const giverRef = doc(firestore, 'users', uid);
 

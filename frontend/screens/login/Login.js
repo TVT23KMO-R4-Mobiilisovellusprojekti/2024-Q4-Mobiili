@@ -23,6 +23,7 @@ export const Login = ({ isVisible, toggleVisible }) => {
     try {
       const data = await signInWithEmailAndPassword(auth, usermail, password);
       if (data) {
+        console.log(`UID: ${data.user.uid} kirjautui`);
         setAuthState(data);
       } else {
         Alert.alert(
