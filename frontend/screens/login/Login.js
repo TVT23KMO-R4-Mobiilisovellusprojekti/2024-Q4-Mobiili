@@ -1,8 +1,7 @@
 import React, { useContext, useState } from "react";
 import { AuthenticationContext } from "../../context/AuthenticationContext";
 import { useNavigation } from "@react-navigation/native";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../services/firebaseConfig";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { Alert, View } from "react-native";
 import Toast from "react-native-toast-message";
 import {
@@ -20,6 +19,7 @@ export const Login = ({ isVisible, toggleVisible }) => {
   const navigation = useNavigation();
 
   const handleLogin = async () => {
+    const auth = getAuth();
     try {
       const data = await signInWithEmailAndPassword(auth, usermail, password);
       if (data) {

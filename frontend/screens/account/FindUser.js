@@ -12,7 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 import { AuthenticationContext } from "../../context/AuthenticationContext";
 import globalStyles from "../../assets/styles/Styles.js";
 import Toast from "react-native-toast-message";
-import { deleteUserDataFromFirestore } from "../../services/firebaseController.js";
+import { deleteUserDataFromFirestore } from "../../services/firestoreUsers.js";
 
 export const DeleteAccountOfThisUser = () => {
   const { setAuthState } = useContext(AuthenticationContext);

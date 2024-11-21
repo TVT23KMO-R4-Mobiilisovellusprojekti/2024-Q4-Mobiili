@@ -7,10 +7,6 @@ import {
   MessagingSystem,
   AccountSystem,
 } from "./FindUser";
-import {
-  NavigateToThisUsersItems,
-  NavigateToThisUsersQueue,
-} from "../items/FindItems";
 import { AuthenticationContext } from "../../context/AuthenticationContext";
 
 export const AccountLoggedOut = () => { 
@@ -35,9 +31,8 @@ export const AccountLoggedIn = () => {
     <ScrollView contentContainerStyle={{ padding: 8 }}>
       <Heading title="Käyttäjän omat" />
       <MessagingSystem />
-      <NavigateToThisUsersItems />
-      <NavigateToThisUsersQueue />
-      <Heading title="Tilin hallinta" />
+      {/*<NavigateToThisUsersItems />*/}
+      {/*<NavigateToThisUsersQueue />*/}
       <AccountSystem />
       <LogoutFromThisUser />
     </ScrollView>
