@@ -16,8 +16,7 @@ import { deleteUserDataFromFirestore } from "../../services/firestoreUsers.js";
 
 export const DeleteAccountOfThisUser = () => {
   const { setAuthState } = useContext(AuthenticationContext);
-  const [isDeletingThisAccount, setDeletingThisAccount] = useState(false);
-  const [isConfirmed, setIsConfirmed] = useState(false);
+  const [isDeletingThisAccount, setIsDeletingThisAccount ] = useState(false);
   const navigation = useNavigation();
 
   const userDelete = async () => {
@@ -41,59 +40,48 @@ export const DeleteAccountOfThisUser = () => {
     try {
       await userDelete();
       setAuthState(null);
+      navigation.navigate("Home");
       Alert.alert("Tilin poisto onnistui");
     } catch (error) {
       Alert.alert("Tapahtui virhe", error.message);
     }
   };
 
-  const toggleDeletingThisAccount = () => {
-    setDeletingThisAccount(!isDeletingThisAccount);
-    setIsConfirmed(false);
-  };
-
   const handleDoubleCheckWhenDeleting = () => {
-    setDeletingThisAccount(false);
-    setIsConfirmed(true);
+    setIsDeletingThisAccount(true);
   };
 
   const handleConfirmWhenDeleting = () => {
     handleDeleteUser();
-    navigation.navigate("Home");
   };
 
   const handleDeletingThisAccountCancel = () => {
-    setDeletingThisAccount(false);
-    setIsConfirmed(false);
+    setIsDeletingThisAccount(false);
   };
 
   return (
     <>
-      <Heading title="Poista tili" onPress={toggleDeletingThisAccount} />
+      <Heading title="Poista tili" />
 
       {!isDeletingThisAccount ? (
-        <></>
-      ) : (
-        <>
-          <BasicSection>
-            Mikäli poistat käyttäjätilisi palvelusta, sen kaikki tiedot
-            poistetaan. Vahvistusta kysytään kerran painaessasi "Poista tili".
-            {"\n\n"}
-          </BasicSection>
-          <View style={globalStyles.viewButtons}>
-            <ButtonDelete
-              title="Poista tili"
-              onPress={handleDoubleCheckWhenDeleting}
-            />
+         <>
+         <BasicSection>
+           Mikäli poistat käyttäjätilisi palvelusta, sen kaikki tiedot
+           poistetaan. Vahvistusta kysytään kerran painaessasi "Poista tili".
+           {"\n\n"}
+         </BasicSection>
+         <View style={globalStyles.viewButtons}>
+           <ButtonDelete
+             title="Poista"
+             onPress={handleDoubleCheckWhenDeleting}
+           />
             <ButtonCancel
               title="Peruuta"
-              onPress={handleDeletingThisAccountCancel}
+              onPress={navigation.goBack}
             />
-          </View>
-        </>
-      )}
-
-      {isConfirmed && (
+         </View>
+       </>
+      ) : (
         <>
           <BasicSection>Oletko varma? {"\n\n"}</BasicSection>
           <View style={globalStyles.viewButtons}>
@@ -103,7 +91,7 @@ export const DeleteAccountOfThisUser = () => {
             />
             <ButtonCancel
               title="Peruuta"
-              onPress={handleDeletingThisAccountCancel}
+              onPress={navigation.goBack}
             />
           </View>
         </>
@@ -183,7 +171,7 @@ export const AccountSystem = () => {
   return (
     <>
       <ButtonNavigate
-        title="Tilin hallinta"
+        title="Poista tili"
         onPress={() => navigation.navigate("AccountMaintain")}
       />
     </>

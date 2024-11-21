@@ -1,4 +1,4 @@
-# Kierrätyssovellus
+# Kierrätyssovellus 
 
 ---------------------------------
 
@@ -10,14 +10,13 @@
 - Elina Lappalainen ([c2lael03](https://github.com/c2lael03))
 
 ---------------------------------
-Tämä arkisto esittelee Oulun ammattikorkeakoulun 2. vuoden tieto- ja viestintätekniikan opiskelijoiden tekemää elokuvasivustoa, joka kuuluu toteutukseen **Mobiilikehitysprojekti** (6 op + 3 op). 
-
+Tämä arkisto esittelee Oulun ammattikorkeakoulun 2. vuoden tieto- ja viestintätekniikan opiskelijoiden tekemää sovellusta, joka kuuluu toteutukseen **Mobiilikehitysprojekti** (6 op + 3 op). 
 Hankkeen tarkoituksena on oppia kokonaisvaltaista mobiilikehitystä ketteriä menetelmiä sekä versionhallintajärjestelmää käyttäen. 
 
 ### Esitysmateriaali
 
 - Tulossa
-
+  
 ---------------------------------
 
 ## Sovelluksen kuvaus
@@ -31,9 +30,6 @@ Hankkeen tarkoituksena on oppia kokonaisvaltaista mobiilikehitystä ketteriä me
 
 
 ### Ohjelmistoarkkitehtuuri
-
-- Tulossa
-
 
 ### Tietokanta
 

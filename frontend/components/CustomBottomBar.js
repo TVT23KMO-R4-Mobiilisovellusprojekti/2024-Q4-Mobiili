@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, Image, Keyboard, useWindowDimensions } from 'react-native';
+import { View, TouchableOpacity, Image, Keyboard } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { useNavigation } from '@react-navigation/native';
 import globalStyles from '../assets/styles/Styles';
@@ -8,9 +8,6 @@ import logo from '../assets/images/kierttisTitle.png';
 const CustomBottomBar = () => {
   const navigation = useNavigation(); 
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-  const { width, height } = useWindowDimensions();
-  
-  const isLandscape = width > height;
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
@@ -26,7 +23,7 @@ const CustomBottomBar = () => {
     };
   }, []);
 
-  const shouldShowBottomBar = !isKeyboardVisible && !isLandscape;
+  const shouldShowBottomBar = !isKeyboardVisible;
 
   return (
     shouldShowBottomBar && (

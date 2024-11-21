@@ -1,6 +1,5 @@
 import { pad } from 'lodash';
 import { StyleSheet } from 'react-native';
-import { AccountSection } from '../../components/CommonComponents';
 
 const globalStyles = StyleSheet.create({
 

@@ -3,7 +3,6 @@ import { Appbar, Menu } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import globalStyles from '../assets/styles/Styles';
-
 import { AuthenticationContext } from "../context/AuthenticationContext";
 
 const CustomTopBar = () => {
@@ -43,7 +42,7 @@ const CustomTopBar = () => {
         <Menu.Item onPress={() => navigateToScreen('Home')} title="Aloitus" />
         <Menu.Item onPress={() => navigateToScreen(authState ? 'AccountLoggedIn' : 'AccountLoggedOut')} title="Tilin hallinta" />
         <Menu.Item onPress={() => navigateToScreen('ItemsMain')} title="Julkaisut" />
-        <Menu.Item onPress={() => navigateToScreen('Credits')} title="Sovellustiedot" />
+        <Menu.Item onPress={() => navigateToScreen('Credits')} title="Tietoa sovelluksesta" />
       </Menu>
 
       <Appbar.Content 

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import React from 'react';
+import { View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-native-paper';
@@ -14,29 +14,12 @@ import ItemsMain from './screens/items/ItemsMain';
 import Credits from './screens/credits/Credits';
 import MessagesMain from './screens/messages/MessagesMain';
 import { ItemsFromThisUser, QueuesOfThisUser, ItemAddView } from './screens/items/ItemComponents';
-import * as ScreenOrientation from 'expo-screen-orientation';
 import Toast from 'react-native-toast-message';
 import ChatView from './screens/chat/ChatView';
 
 const Stack = createStackNavigator();
 
 export default function App() {
-  const [authState, setAuthState] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const lockOrientation = async () => {
-      await ScreenOrientation.unlockAsync();
-    };
-
-    lockOrientation();
-    setIsLoading(false);
-
-  }, []);
-
-  if (isLoading) {
-    return <View style={globalStyles.container}><Text>Loading...</Text></View>;
-  }
 
   return (
     <Provider>
@@ -44,7 +27,7 @@ export default function App() {
         <NavigationContainer>
           <CustomTopBar />
             <View style={globalStyles.container}>
-              <Stack.Navigator initialRouteName='Home'>
+              <Stack.Navigator initialRouteName="Home">
                 <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
                 <Stack.Screen name="AccountMain" component={AccountMain} options={{ headerShown: false }} />
                 <Stack.Screen name="AccountLoggedIn" component={AccountLoggedIn} options={{ headerShown: false }} />
