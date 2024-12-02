@@ -12,9 +12,11 @@ import {
   TouchableOpacity,
   TextInput,
   Text,
+  Image,
 } from "react-native";
 import globalStyles from "../../assets/styles/Styles";
 import GlobalButtons from "../../assets/styles/GlobalButtons";
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 
 const AuthScreen = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -61,6 +63,32 @@ const AuthScreen = () => {
         "Kirjautuminen epäonnistui",
         error.message || "Yhteysvirhe"
       );
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      const googleCredential = GoogleAuthProvider.credential(userInfo.idToken);
+      const userCredential = await signInWithCredential(auth, googleCredential);
+      const { user } = userCredential;
+
+      console.log('Login Success:', userInfo);
+      if (userCredential.additionalUserInfo.isNewUser) { // Tarkistetaan onko käyttäjä uusi käyttäjä
+        await saveUserToFirestore(user.uid, user.displayName, user.email.toLocaleLowerCase());
+        showToast("success", "Käyttäjätunnus luotu!", "Voit nyt kirjautua!");
+      } else {
+        showToast("success", "Kirjautuminen onnistui!", "Tervetuloa takaisin!");
+      }
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) { // Käyttäjä perui kirjautumisen
+      } else if (error.code === statusCodes.IN_PROGRESS) { // Kirjautuminen on jo käynnissä
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) { // Play servicet on nurin tai ei saavutettavissa
+      } else {
+        console.error('Login Failed:', error);
+        showToast("error", "Google Kirjautuminen epäonnistui", error.message || "Yhteysvirhe");
+      }
     }
   };
 
@@ -112,6 +140,14 @@ const AuthScreen = () => {
             {isLogin ? "Rekisteröidy" : "Kirjaudu"}
           </Text>
         </TouchableOpacity>
+        </View>
+        <View style={styles.googleButtonContainer}>
+          <TouchableOpacity onPress={handleGoogleLogin}>
+            <Image
+              source={require('../../assets/android_light_rd.png')}
+              style={styles.googleButtonImage}
+            />
+          </TouchableOpacity>
       </View>
     </View>
   );
@@ -161,6 +197,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 20,
+  },
+  googleButtonContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginBottom: 30,
+  },
+  googleButtonImage: {
+    width: 225,
+    height: 50,
   },
 });
 

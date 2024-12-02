@@ -10,18 +10,20 @@
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff",
-    "plugins": ["@react-native-google-signin/google-signin"]
+      "plugins": [
+        "@react-native-google-signin/google-signin"
+      ]
     },
     "ios": {
       "supportsTablet": true,
-      "googleServicesFile": "./GoogleService-Info.plist"
+      "bundleIdentifier": "com.anonymous.kierttis"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "googleServicesFile": "./google-services.json"
+      "package": "com.anonymous.kierttis"
     },
     "web": {
       "favicon": "./assets/favicon.png"
