@@ -1,14 +1,9 @@
 import React, { useContext } from "react";
-import { ScrollView, Text, View, TouchableOpacity } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import { auth } from "../../services/firebaseConfig";
-import { Heading, BasicSection } from "../../components/CommonComponents";
-import { ButtonNavigate } from "../../components/Buttons";
+import { Heading } from "../../components/CommonComponents";
 import {
   DeleteAccountOfThisUser,
-  LogoutFromThisUser,
-  MessagingSystem,
-  AccountSystem,
-  ChangeUsernameOfThisUser,
   } from "./FindUser";
 import { AuthenticationContext } from "../../context/AuthenticationContext";
 import { useNavigation } from "@react-navigation/native";
@@ -33,8 +28,6 @@ export const AccountLoggedIn = () => {
       );
     }
   }
-
-  // handleUsernameChange
 
   if (!authState) {
     return <Text>Ei käyttäjätietoja saatavilla.</Text>;
@@ -87,15 +80,6 @@ export const AccountMaintain = () => {
   return (
     <ScrollView contentContainerStyle={{ padding: 8 }}>
       <DeleteAccountOfThisUser />
-    </ScrollView>
-  );
-};
-
-//käyttäjänimen koodia
-export const AccountUsername = () => {
-  return (
-    <ScrollView contentContainerStyle={{ padding: 8 }}>
-      <ChangeUsernameOfThisUser />
     </ScrollView>
   );
 };

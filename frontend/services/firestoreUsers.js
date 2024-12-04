@@ -35,6 +35,19 @@ import { get, last, take } from 'lodash';
         }
     };
 
+    // ELINA !!!!  HOX !!!!
+    // copilot tarjos tällasta, mutta voipi olla, että pitää jotenkin muutttaa!! 
+    export const updateUserData = async (uid, username) => {
+        try {
+            const userRef = doc(firestore, "users", uid);
+            await setDoc(userRef, { username }, { merge: true });
+            console.log(`Käyttäjän ${uid} tiedot päivitetty`);
+        } catch (error) {
+            console.error("Virhe päivitettäessä käyttäjän tietoja:", error);
+            throw error;
+        }
+    };
+
     export const saveUserToFirestore = async (uid, username, email) => {
 
         try {
