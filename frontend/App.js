@@ -29,6 +29,7 @@ import ChatView from "./screens/chat/ChatView";
 import AuthScreen from "./screens/auth/AuthScreen";
 import { ThreadsProvider } from "./context/ThreadsContext";
 import { LoadingProvider } from "./context/LoadingContext";
+import { AccountUsername } from "./screens/account/AccountUsername";
 
 const Stack = createStackNavigator();
 
@@ -73,6 +74,11 @@ const AppNavigator = () => {
           <Stack.Screen
             name="AccountMaintain"
             component={AccountMaintain}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="AccountUsername"
+            component={AccountUsername}
             options={{ headerShown: false }}
           />
           <Stack.Screen

@@ -117,22 +117,9 @@ const AccountSystem = () => {
   );
 };
 
-//AccountUsername
-const AccountUsername = () => {
-  const navigation = useNavigation();
-  return (
-    <ButtonNavigate
-      title="Vaihda käyttäjänimi"
-      onPress={() => navigation.navigate("AccountMainUser")}
-    />
-  );
-};
-
 export {
   DeleteAccountOfThisUser,
   LogoutFromThisUser,
   MessagingSystem,
   AccountSystem,
-  AccountUsername,
-  //ChangeUsernameOfThisUser,
 };
