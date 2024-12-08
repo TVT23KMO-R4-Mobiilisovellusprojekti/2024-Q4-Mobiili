@@ -1,10 +1,10 @@
-import { 
-    collection, 
-    addDoc, 
-    query, 
-    where, 
-    getDocs, 
-    deleteDoc, 
+import {
+    collection,
+    addDoc,
+    query,
+    where,
+    getDocs,
+    deleteDoc,
     doc,
     getDoc,
     serverTimestamp,
@@ -15,10 +15,9 @@ import {
     documentId,
 } from 'firebase/firestore';
 
-import { firestore } from './firebaseConfig'; 
-import { first, get, now } from 'lodash';
+import { firestore } from './firebaseConfig';
 import { Timestamp } from 'firebase/firestore';
-import regionsAndCities from '../components/Sorted-maakunnat.json'; 
+import regionsAndCities from '../components/Sorted-maakunnat.json';
 import { getUserData } from './firestoreUsers';
 
     export const addItemToFirestore = async (uid, itemname, itemdescription, city, imageUrl ) => {
@@ -28,7 +27,7 @@ import { getUserData } from './firestoreUsers';
             throw new Error('Täytä puuttuvat kentät.');
         }
 
-        const allCities = Object.values(regionsAndCities).flat(); 
+        const allCities = Object.values(regionsAndCities).flat();
         const isCityValid = allCities.includes(city.trim());
 
         if (!isCityValid) {
@@ -36,7 +35,7 @@ import { getUserData } from './firestoreUsers';
         }
 
 
-        try {;
+        try {
             const giverRef = doc(firestore, 'users', uid);
             const userDoc = await getDoc(giverRef); 
             const giverUsername = userDoc.data().username;
@@ -44,7 +43,7 @@ import { getUserData } from './firestoreUsers';
 
             const expiresInOneWeekSeconds = now.seconds + (7 * 24 * 60 * 60);
             const expiresInOneWeek = new Timestamp(expiresInOneWeekSeconds, 0); // nanosekunnit = 0
-            
+
            // for testing: 2 minutes
            //const expiresInOneWeek = new Timestamp(now.seconds + 2 * 60, now.nanoseconds);
 
@@ -94,14 +93,14 @@ import { getUserData } from './firestoreUsers';
         lastDoc,
         pageSize,
         filter = undefined,
-        city = undefined, 
+        city = undefined,
         refToCollection = () => collection(firestore, 'items'),
         idFieldHandler = (item) => item.id
     ) => {
         try {
             let itemsRef = refToCollection();
             let q;
-    
+
             if (lastDoc) {
                 q = query(itemsRef, orderBy('createdAt'), startAfter(lastDoc), limit(pageSize));
             } else {
@@ -110,32 +109,32 @@ import { getUserData } from './firestoreUsers';
             if (city) {
                 q = query(q, where('city', '==', city));
             }
-    
+
             if (filter) {
                 q = query(q, filter());
             }
-    
+
             const itemsSnapshot = await getDocs(q);
             const items = [];
-    
+
             itemsSnapshot.forEach((doc) => {
                 items.push({ id: idFieldHandler(doc), ...doc.data() });
             });
-    
+
             const lastVisibleDoc = itemsSnapshot.docs[itemsSnapshot.docs.length - 1];
             return { items, lastDoc: lastVisibleDoc };
         } catch (error) {
             throw error;
         }
     };
-    
+
     export const getCurrentUserItems = async (uid, lastDoc, pageSize) => {
         return paginateItems(lastDoc, pageSize, () => where('giverid', '==', doc(firestore, 'users', uid)));
     };
 
     export const getTotalItems = async () => {
 
-        const count = getDocs(collection(firestore, 'items')).then((snapshot) => {
+        const count = await getDocs(collection(firestore, 'items')).then((snapshot) => {
             return snapshot.size;
         }
         );
@@ -144,13 +143,13 @@ import { getUserData } from './firestoreUsers';
 
     export const getCurrentUserItemQueues = async (uid, lastDoc, pageSize) => {
         try {
-            const { items: takerDocs, lastDoc: newLastDoc } = await paginateItems(
+            const {items: takerDocs, lastDoc: newLastDoc} = await paginateItems(
                 lastDoc,
                 pageSize,
                 () => where('takerId', '==', doc(firestore, 'users', uid)),
                 undefined,
                 () => collectionGroup(firestore, 'takers'),
-                (doc) => doc.ref.parent.parent 
+                (doc) => doc.ref.parent.parent
             );
 
             if (takerDocs.length === 0) {
@@ -158,18 +157,18 @@ import { getUserData } from './firestoreUsers';
             }
 
             const itemIds = takerDocs.map((ref) => ref.id);
-            const { items } = await paginateItems(
+            const {items} = await paginateItems(
                 null,
                 itemIds.length,
                 () => where(documentId(), 'in', itemIds)
             );
-    
+
             return { items, lastDoc: newLastDoc };
         } catch (error) {
-            console.error('getCurrentUserItemQueues error:', error);
+            console.error('getCurrentUserItemQueues error:', error)
             throw error;
         }
-    };
+    }
 
     export const getItemFromFirestore = async (itemId) => {
         try {
@@ -197,9 +196,9 @@ import { getUserData } from './firestoreUsers';
         try {
             const itemRef = doc(firestore, 'items', itemId);
 
-            if (!checkIfMyItem(uid, itemId)) {
-                console.error('Virhe: Et voi poistaa toisen tuotteita.');
-                throw new Error('Et voi poistaa toisten tuotteita.');
+            if (!(await checkIfMyItem(uid, itemId))) {
+                console.error("Virhe: Et voi poistaa toisen tuotteita.");
+                throw new Error("Et voi poistaa toisten tuotteita.");
             }
 
             await deleteSubcollection(itemRef, 'takers');
@@ -231,7 +230,7 @@ import { getUserData } from './firestoreUsers';
             throw error;
         }
     }
-        
+
     const deleteSubcollection = async (parentRef, subcollectionName) => {
         try {
             const subcollectionRef = collection(parentRef, subcollectionName);
@@ -252,11 +251,7 @@ import { getUserData } from './firestoreUsers';
             const itemData = await getItemFromFirestore(itemId); 
             const { giverRef } = itemData; 
 
-            if (giverRef.id === uid) {
-                return true; 
-            } else {
-                return false;
-            }
+            return giverRef.id === uid;
         } catch (error) {
             console.error("Error checking item ownership:", error);
             return false;
@@ -269,7 +264,6 @@ import { getUserData } from './firestoreUsers';
             const takersRef = collection(firestore, `items/${itemId}/takers`);
             const snapshot = await getDocs(takersRef);
             return snapshot.size -1;
-
         } catch (error) {
             console.error('Virhe jonottajien määrän hakemisessa:', error);
         }
@@ -279,29 +273,28 @@ import { getUserData } from './firestoreUsers';
         try {
             const takersRef = collection(firestore, `items/${itemId}/takers`);
             const snapshot = await getDocs(query(takersRef, orderBy('createdAt')));
-        
+
             if (snapshot.empty) {
                 return null;
             }
-    
-            const firstInQueueDoc = snapshot.docs[0]; 
+
+            const firstInQueueDoc = snapshot.docs[0];
             const userRef = firstInQueueDoc.data().takerId;
-        
+
             if (!userRef) {
-                return null; 
+                return null;
             }
-            
-            const userSnapshot = await getDoc(userRef); 
+
+            const userSnapshot = await getDoc(userRef);
             if (!userSnapshot.exists()) {
-                return null; 
+                return null;
             }
-        
-            const username = userSnapshot.data().username; 
-            return username; 
-        
+
+            const username = userSnapshot.data().username;
+            return username;
+
         } catch (error) {
             console.error('Virhe jonossa ensimmäisen hakemisessa:', error);
             return null;
         }
     };
-    

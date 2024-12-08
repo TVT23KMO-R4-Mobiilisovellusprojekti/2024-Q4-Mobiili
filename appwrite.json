@@ -1,0 +1,65 @@
+{
+  "projectId": "674f7f73b3e73abb13fc",
+  "functions": [
+    {
+      "$id": "handle-expired-items",
+      "name": "handle-expired-items",
+      "runtime": "node-22",
+      "execute": ["any"],
+      "events": [],
+      "scopes": [],
+      "schedule": "0 0 * * *",
+      "timeout": 15,
+      "enabled": true,
+      "logging": true,
+      "entrypoint": "src/index.js",
+      "commands": "npm install",
+      "path": "functions"
+    },
+    {
+      "$id": "handle-expired-takers",
+      "name": "handle-expired-takers",
+      "runtime": "node-22",
+      "execute": ["any"],
+      "events": [],
+      "scopes": [],
+      "schedule": "0 * * * *",
+      "timeout": 15,
+      "enabled": true,
+      "logging": true,
+      "entrypoint": "src/index.js",
+      "commands": "npm install",
+      "path": "functions"
+    },
+    {
+      "$id": "handle-invalid-threads",
+      "name": "handle-invalid-threads",
+      "runtime": "node-22",
+      "execute": ["any"],
+      "events": [],
+      "scopes": ["users.read"],
+      "schedule": "*/5 * * * *",
+      "timeout": 15,
+      "enabled": true,
+      "logging": true,
+      "entrypoint": "src/index.js",
+      "commands": "npm install",
+      "path": "functions"
+    },
+    {
+      "$id": "handle-taker-creation",
+      "name": "handle-taker-creation",
+      "runtime": "node-22",
+      "execute": ["any"],
+      "events": [],
+      "scopes": ["users.read"],
+      "schedule": "",
+      "timeout": 15,
+      "enabled": true,
+      "logging": true,
+      "entrypoint": "src/index.js",
+      "commands": "npm install",
+      "path": "functions"
+    }
+  ]
+}

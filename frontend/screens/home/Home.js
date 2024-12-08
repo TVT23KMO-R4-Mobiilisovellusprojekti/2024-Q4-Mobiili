@@ -1,13 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { AuthenticationContext } from "../../context/AuthenticationContext";
-import { ScrollView, Text, View } from 'react-native';
-import { Heading } from '../../components/CommonComponents';
+import React, { useContext, useEffect, useState } from "react";
+import { useAuth } from "../../context/AuthenticationContext";
+import { ScrollView, Text, View } from "react-native";
+import { Heading } from "../../components/CommonComponents";
 import AuthScreen from "../auth/AuthScreen";
 import globalStyles from "../../assets/styles/Styles";
-import { Image } from 'react-native';
+import { Image } from "react-native";
 
 const Home = () => {
-    const  authState  = useContext(AuthenticationContext);
+  const authState = useAuth();
     const [imageSource, setImageSource] = useState(require('../../assets/images/bg2.png'));
 
     useEffect(() => {
@@ -23,14 +23,17 @@ const Home = () => {
       <ScrollView contentContainerStyle={{ padding: 8 }}>
           {authState ? (
             <>
-
               <View style={globalStyles.separatorThin} />
-                <Text style={globalStyles.defText}>{`Olet kirjautunut käyttäjänä:`}</Text>
-                <Text style={globalStyles.defTitle}>{`${authState.user.username}`}</Text>
+                <Text style={globalStyles.defText}>
+                  {`Olet kirjautunut käyttäjänä:`}
+                </Text>
+                <Text style={globalStyles.defTitle}>
+                  {`${authState.user.username}`}
+                </Text>
               <View style={globalStyles.separatorBold} />
 
               <Image 
-                source={imageSource} 
+                source={imageSource}
                 style={globalStyles.image} 
                 resizeMode="contain"
               />

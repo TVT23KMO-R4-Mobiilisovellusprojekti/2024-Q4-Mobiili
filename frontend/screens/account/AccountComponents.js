@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { ScrollView, Text, View, TouchableOpacity } from "react-native";
+import { ScrollView, Text, View, TouchableOpacity, Alert } from "react-native";
 import { auth } from "../../services/firebaseConfig";
 import { Heading, BasicSection } from "../../components/CommonComponents";
 import { ButtonNavigate } from "../../components/Buttons";
@@ -9,7 +9,7 @@ import {
   MessagingSystem,
   AccountSystem,
   ChangeUsernameOfThisUser,
-  } from "./FindUser";
+} from "./FindUser";
 import { AuthenticationContext } from "../../context/AuthenticationContext";
 import { useNavigation } from "@react-navigation/native";
 import globalStyles from "../../assets/styles/Styles";
@@ -22,7 +22,7 @@ export const AccountLoggedIn = () => {
 
   const handleLogout = async () => {
     try {
-      await signOut(auth); 
+      await signOut(auth);
       console.log(`UID: ${authState.user.id} uloskirjautui`);
       navigation.navigate("AccountMain");
     } catch (error) {
@@ -32,7 +32,7 @@ export const AccountLoggedIn = () => {
         "Uloskirjautumisessa tapahtui virhe. Yritä uudelleen."
       );
     }
-  }
+  };
 
   // handleUsernameChange
 
@@ -45,24 +45,23 @@ export const AccountLoggedIn = () => {
       <Heading title="Käyttäjän omat" />
       <View style={globalStyles.viewIcons}>
         <View style={globalStyles.iconWithText}>
-          <IconChat onPress={() => navigation.navigate('ItemAddView')} />
+          <IconChat onPress={() => navigation.navigate("MessagesMain")} />
           <Text style={globalStyles.textWithIcon}>Keskustelut</Text>
         </View>
 
         <View style={globalStyles.iconWithText}>
-          <IconMyItemList onPress={() => navigation.navigate('MyItems')} />
+          <IconMyItemList onPress={() => navigation.navigate("MyItems")} />
           <Text style={globalStyles.textWithIcon}>Ilmoitukset</Text>
         </View>
 
         <View style={globalStyles.iconWithText}>
-          <IconMyQueueList onPress={() => navigation.navigate('MyQueues')} />
+          <IconMyQueueList onPress={() => navigation.navigate("MyQueues")} />
           <Text style={globalStyles.textWithIcon}>Varaukset</Text>
         </View>
       </View>
 
       <Heading title="Tilin hallinta" />
       <View style={globalStyles.viewIcons}>
-
         <View style={globalStyles.iconWithText}>
           <IconRemoveUser onPress={() => navigation.navigate('AccountMaintain')} />
           <Text style={globalStyles.textWithIcon}>Poista tili</Text>
@@ -78,7 +77,6 @@ export const AccountLoggedIn = () => {
           <Text style={globalStyles.textWithIcon}>Kirjaudu ulos</Text>
         </View>
       </View>
-
     </ScrollView>
   );
 };

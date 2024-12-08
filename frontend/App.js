@@ -1,11 +1,12 @@
-import React, { useContext } from "react";
+import "react-native-url-polyfill/auto";
+import React from "react";
 import { View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Provider } from "react-native-paper";
 import {
-  AuthenticationContext,
   AuthenticationProvider,
+  useAuth,
 } from "./context/AuthenticationContext";
 import globalStyles from "./assets/styles/Styles";
 import CustomTopBar from "./components/CustomTopBar";
@@ -18,22 +19,19 @@ import {
 } from "./screens/account/AccountComponents";
 import Credits from "./screens/credits/Credits";
 import MessagesMain from "./screens/messages/MessagesMain";
-import {
-  ItemsFromThisUser,
-  QueuesOfThisUser,
-  ItemAddView,
-} from "./screens/items/ItemsMain";
 import ItemsMain from "./screens/items/ItemsMain";
 import Toast from "react-native-toast-message";
 import ChatView from "./screens/chat/ChatView";
 import AuthScreen from "./screens/auth/AuthScreen";
-import { ThreadsProvider } from "./context/ThreadsContext";
 import { LoadingProvider } from "./context/LoadingContext";
+import { AddItemView } from "./screens/items/AddItemView";
+import { UserItemsView } from "./screens/items/UserItemsView";
+import { UserQueues } from "./screens/items/UserQueues";
 
 const Stack = createStackNavigator();
 
 const AppNavigator = () => {
-  const authState = useContext(AuthenticationContext);
+  const authState = useAuth();
 
   return (
     <Stack.Navigator initialRouteName="AuthScreen">
@@ -56,8 +54,8 @@ const AppNavigator = () => {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="ItemAddView"
-            component={ItemAddView}
+            name="AddItemView"
+            component={AddItemView}
             options={{ headerShown: false }}
           />
           <Stack.Screen
@@ -82,12 +80,12 @@ const AppNavigator = () => {
           />
           <Stack.Screen
             name="MyItems"
-            component={ItemsFromThisUser}
+            component={UserItemsView}
             options={{ headerShown: false }}
           />
           <Stack.Screen
             name="MyQueues"
-            component={QueuesOfThisUser}
+            component={UserQueues}
             options={{ headerShown: false }}
           />
           <Stack.Screen
@@ -114,18 +112,16 @@ const App = () => {
   return (
     <Provider>
       <AuthenticationProvider>
-        <ThreadsProvider>
-          <NavigationContainer>
-            <CustomTopBar />
-            <View style={globalStyles.container}>
-              <LoadingProvider>
-                <AppNavigator />
-              </LoadingProvider>
-            </View>
-            <CustomBottomBar />
-            <Toast />
-          </NavigationContainer>
-        </ThreadsProvider>
+        <NavigationContainer>
+          <CustomTopBar />
+          <View style={globalStyles.container}>
+            <LoadingProvider>
+              <AppNavigator />
+            </LoadingProvider>
+          </View>
+          <CustomBottomBar />
+          <Toast />
+        </NavigationContainer>
       </AuthenticationProvider>
     </Provider>
   );

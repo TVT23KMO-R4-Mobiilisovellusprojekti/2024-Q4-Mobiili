@@ -2,13 +2,35 @@ import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { Heading } from "../../components/CommonComponents";
 import ThreadCard from "./ThreadCard";
-import { useThreads } from "../../context/ThreadsContext";
+import useThreads from "../../hooks/useThreads";
 import Toast from "react-native-toast-message";
 import { firestore } from "../../services/firebaseConfig";
-import {  doc, getDoc, deleteDoc, collection, query, where, getDocs  } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  deleteDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
+
+const ThreadList = ({ threads }) => {
+  return (
+    <ScrollView style={styles.scrollContainer}>
+      {threads.length > 0 ? (
+        threads.map((thread) => <ThreadCard key={thread.id} thread={thread} />)
+      ) : (
+        <Text style={styles.noThreadsText}>
+          Aktiivisia keskusteluja ei löytynyt
+        </Text>
+      )}
+    </ScrollView>
+  );
+};
 
 const MessagesMain = () => {
-  const threads = useThreads();
+  const threads = useThreads((state) => state.threads);
   const [filteredThreads, setFilteredThreads] = useState([]);
 
   useEffect(() => {
@@ -43,18 +65,27 @@ const MessagesMain = () => {
       try {
         const itemRef = doc(firestore, thread.item.path);
         const takersCollectionRef = collection(itemRef, "takers");
-        const q = query(takersCollectionRef, where("takerId", "in", thread.participants));
+        const q = query(
+          takersCollectionRef,
+          where("takerId", "in", thread.participants)
+        );
         const querySnapshot = await getDocs(q);
         if (!querySnapshot.empty) {
           console.log("Varaus löytyy takers-alikokoelmasta:", thread.id);
           return true;
         } else {
-          console.log("Varausta ei löydy takers-alikokoelmasta, poistetaan viestiketju:", thread.id);
+          console.log(
+            "Varausta ei löydy takers-alikokoelmasta, poistetaan viestiketju:",
+            thread.id
+          );
           await deleteDoc(doc(firestore, "threads", thread.id));
           return false;
         }
       } catch (error) {
-        console.error("Error checking reservation in takers subcollection:", error);
+        console.error(
+          "Error checking reservation in takers subcollection:",
+          error
+        );
         return false;
       }
     };
@@ -77,17 +108,7 @@ const MessagesMain = () => {
   return (
     <View style={styles.container}>
       <Heading title="Omat keskustelut" />
-      <ScrollView style={styles.scrollContainer}>
-        {threads.length > 0 ? (
-          threads.map((thread) => (
-            <ThreadCard key={thread.id} thread={thread} />
-          ))
-        ) : (
-          <Text style={styles.noThreadsText}>
-            Aktiivisia keskusteluja ei löytynyt
-          </Text>
-        )}
-      </ScrollView>
+      <ThreadList threads={threads.threads} />
     </View>
   );
 };
