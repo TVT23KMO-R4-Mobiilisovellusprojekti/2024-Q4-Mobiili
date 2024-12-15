@@ -399,6 +399,6 @@ const globalStyles = StyleSheet.create((props) => ({
     marginVertical: 2,
   },
 
-});
+}));
 
 export default globalStyles;
