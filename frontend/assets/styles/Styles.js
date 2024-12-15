@@ -1,7 +1,12 @@
 import { pad } from "lodash";
 import { StyleSheet } from "react-native";
+import { useFontSize } from './FontSizeContext'; // Assuming FontSizeContext is in the same directory
 
-const globalStyles = StyleSheet.create({
+//alkup.
+//const globalStyles = StyleSheet.create({
+
+//saavutettavuus versio:
+const globalStyles = StyleSheet.create((props) => ({
   container: {
     flex: 1,
     backgroundColor: "rgba(255, 255, 255, 0.3)",
@@ -44,23 +49,27 @@ const globalStyles = StyleSheet.create({
   },
 
   iconText: {
-    fontSize: 12,
+    //fontSize: 12,
+    fontSize: props.fontSize  ? props.fontSize : 12, // Jos props.fontSize on määritelty, käytetään sitä, muuten 12
     color: "#000",
     marginLeft: 4,
   },
 
   textWithIcon: {
-    fontSize: 12,
+    //fontSize: 12,
+    fontSize: props.fontSize  ? props.fontSize : 12,
     color: "#000",
   },
 
   iconsOnUse: {
-    fontSize: 40,
+    //fontSize: 40,
+    fontSize: props.fontSize  ? props.fontSize : 40,
     marginHorizontal: 5,
   },
 
   iconStyle: {
-    fontSize: 44,
+    //fontSize: 44,
+    fontSize: props.fontSize  ? props.fontSize : 44,
     color: "#000",
     paddingLeft: 6,
     paddingRight: 6,
@@ -68,20 +77,23 @@ const globalStyles = StyleSheet.create({
   },
 
   defText: {
-    fontSize: 18,
+    //fontSize: 18,
+    fontSize: props.fontSize  ? props.fontSize : 18,
     color: "#000",
     marginLeft: 4,
   },
 
   defTitle: {
-    fontSize: 34,
+    //fontSize: 34,
+    fontSize: props.fontSize  ? props.fontSize : 34,
     color: "#000",
     marginLeft: 8,
     fontFamily: "Chewy",
   },
 
   betwTitle: {
-    fontSize: 24,
+    //fontSize: 24,
+    fontSize: props.fontSize  ? props.fontSize : 24,
     fontWeight: "bold",
     color: "#0f6b0d",
     textAlign: "center",
@@ -103,7 +115,8 @@ const globalStyles = StyleSheet.create({
 
   title: {
     textAlign: "center",
-    fontSize: 24,
+    //fontSize: 24,
+    fontSize: props.fontSize  ? props.fontSize : 24,
     fontWeight: "bold",
   },
 
@@ -185,7 +198,8 @@ const globalStyles = StyleSheet.create({
 
   appBarTitleAuthUndef: {
     fontFamily: "Chewy",
-    fontSize: 40,
+    //fontSize: 40,
+    fontSize: props.fontSize  ? props.fontSize : 40,
     color: "#000444",
     paddingVertical: 15,
     textShadowColor: "#fff", 
@@ -195,7 +209,8 @@ const globalStyles = StyleSheet.create({
   
   appBarTitle: {
     fontFamily: "Chewy",
-    fontSize: 40,
+    //fontSize: 40,
+    fontSize: props.fontSize  ? props.fontSize : 40,
     color: "#98F9B9",
     paddingVertical: 15,
   },
@@ -227,7 +242,8 @@ const globalStyles = StyleSheet.create({
   },
 
   label: {
-    fontSize: 16,
+    //fontSize: 16,
+    fontSize: props.fontSize  ? props.fontSize : 16,
     marginBottom: 8,
   },
 
@@ -262,7 +278,8 @@ const globalStyles = StyleSheet.create({
   },
 
   disabledButton: {
-    fontSize: 55,
+    //fontSize: 55,
+    fontSize: props.fontSize  ? props.fontSize : 55,
     color: "#ccc",
   },
 
@@ -318,13 +335,15 @@ const globalStyles = StyleSheet.create({
   },
 
   itemName: {
-    fontSize: 18,
+    //fontSize: 18,
+    fontSize: props.fontSize  ? props.fontSize : 18,
     fontWeight: "bold",
   },
 
   errorText: {
     color: "red",
-    fontSize: 16,
+    //fontSize: 16,
+    fontSize: props.fontSize  ? props.fontSize : 16,
   },
 
   image: {
@@ -364,7 +383,8 @@ const globalStyles = StyleSheet.create({
     paddingHorizontal: 5,
     paddingVertical: 2,
     borderRadius: 3,
-    fontSize: 12,
+    //fontSize: 12,
+    fontSize: props.fontSize  ? props.fontSize : 12,
   },
 
   suggestionsList: {

@@ -6,6 +6,7 @@ import { useFonts } from 'expo-font';
 import globalStyles from '../assets/styles/Styles';
 import { AuthenticationContext } from "../context/AuthenticationContext";
 import logo from '../assets/images/kierttisTitle.png';
+import { useFontSize } from './FontSizeContext';
 
 const CustomTopBar = () => {
   const navigation = useNavigation();
@@ -24,6 +25,20 @@ const CustomTopBar = () => {
     setMenuVisible(false);
     navigation.navigate(screenName);
   };
+
+  //saavutettavuus:
+  //const FontSizeContext = createContext();
+  //export const FontSizeProvider = ({ children }) => {
+    const { fontSize, increaseFontSize, decreaseFontSize } = useFontSize(); // Initial font size
+  /*
+    const increaseFontSize = () => {
+      setFontSize(fontSize + 2);
+    }
+    const decreaseFontSize = () => {
+      setFontSize(fontSize - 2);
+    };
+  */
+   //saavutettavuus koodi päättyy
 
   return (
     <>
@@ -54,8 +69,6 @@ const CustomTopBar = () => {
           />
         </Appbar.Header>
       ) : (
-
-
         <Appbar.Header style={globalStyles.appBarAuthUndef}>
 
           <Image source={logo} style={globalStyles.logo} />
@@ -63,7 +76,13 @@ const CustomTopBar = () => {
             title="Kierttis"
             titleStyle={globalStyles.appBarTitleAuthUndef}
             style={globalStyles.appBarContainerAuthUndef}
-          />
+            />
+            <Button icon="font-size" onPress={increaseFontSize}>
+              A
+            </Button>
+            <Button icon="font-size" onPress={decreaseFontSize}>
+              A
+            </Button>
         </Appbar.Header>
       )}
     </>
