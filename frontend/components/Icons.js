@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -197,6 +196,22 @@ export const IconRemoveUser = ({ onPress }) => {
     return (
         <TouchableOpacity onPress={onPress} style={[globalStyles.iconButton]}>
             <Icon name="person-remove-outline" style={globalStyles.iconStyle} />
+        </TouchableOpacity>
+    );
+}
+
+//saavutettavuus:
+export const IconPlusFontSize = ({ onPress }) => {
+    return (
+        <TouchableOpacity onPress={onPress} style={[globalStyles.iconButton]}>
+            <Icon name="format-annotation-plus" style={globalStyles.iconStyle} />
+        </TouchableOpacity>
+    );
+}
+export const IconMinusFontSize = ({ onPress }) => {
+    return (
+        <TouchableOpacity onPress={onPress} style={[globalStyles.iconButton]}>
+            <Icon name="format-annotation-minus" style={globalStyles.iconStyle} />
         </TouchableOpacity>
     );
 }

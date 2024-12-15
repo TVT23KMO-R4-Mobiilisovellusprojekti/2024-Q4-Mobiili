@@ -28,7 +28,8 @@ const CustomTopBar = () => {
 
   //saavutettavuus:
     const { fontSize, increaseFontSize, decreaseFontSize } = useFontSize(); // Initial font size
-   //saavutettavuus koodi päättyy
+  //saavutettavuus koodi päättyy
+  //IconPlusFontSize
 
   return (
     <>
@@ -59,11 +60,11 @@ const CustomTopBar = () => {
           />
 
           <Appbar.Action 
-            icon="plus" 
+            icon="format-annotation-plus" 
             onPress={increaseFontSize} 
           />
           <Appbar.Action 
-            icon="minus" 
+            icon="format-annotation-minus" 
             onPress={decreaseFontSize} 
           />
 
