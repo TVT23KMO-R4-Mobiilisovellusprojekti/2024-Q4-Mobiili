@@ -27,17 +27,7 @@ const CustomTopBar = () => {
   };
 
   //saavutettavuus:
-  //const FontSizeContext = createContext();
-  //export const FontSizeProvider = ({ children }) => {
     const { fontSize, increaseFontSize, decreaseFontSize } = useFontSize(); // Initial font size
-  /*
-    const increaseFontSize = () => {
-      setFontSize(fontSize + 2);
-    }
-    const decreaseFontSize = () => {
-      setFontSize(fontSize - 2);
-    };
-  */
    //saavutettavuus koodi päättyy
 
   return (
@@ -67,6 +57,16 @@ const CustomTopBar = () => {
             titleStyle={globalStyles.appBarTitle}
             style={globalStyles.appBarContainer}
           />
+
+          <Appbar.Action 
+            icon="plus" 
+            onPress={increaseFontSize} 
+          />
+          <Appbar.Action 
+            icon="minus" 
+            onPress={decreaseFontSize} 
+          />
+
         </Appbar.Header>
       ) : (
         <Appbar.Header style={globalStyles.appBarAuthUndef}>
@@ -77,12 +77,6 @@ const CustomTopBar = () => {
             titleStyle={globalStyles.appBarTitleAuthUndef}
             style={globalStyles.appBarContainerAuthUndef}
             />
-            <Button icon="font-size" onPress={increaseFontSize}>
-              A
-            </Button>
-            <Button icon="font-size" onPress={decreaseFontSize}>
-              A
-            </Button>
         </Appbar.Header>
       )}
     </>
