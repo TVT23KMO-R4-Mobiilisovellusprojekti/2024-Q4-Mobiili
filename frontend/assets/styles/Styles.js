@@ -300,6 +300,13 @@ const globalStyles = StyleSheet.create({
     borderRadius: 8,
   },
 
+  userButton: {
+    flexDirection: "row",
+    justifyContent: "center",
+    paddingVertical: 9,
+    borderRadius: 8,
+  },
+
   viewIcons: {
     flexDirection: "row",
     justifyContent: "center",

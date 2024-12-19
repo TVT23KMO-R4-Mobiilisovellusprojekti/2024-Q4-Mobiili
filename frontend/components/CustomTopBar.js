@@ -6,6 +6,9 @@ import { useFonts } from 'expo-font';
 import globalStyles from '../assets/styles/Styles';
 import { AuthenticationContext } from "../context/AuthenticationContext";
 import logo from '../assets/images/kierttisTitle.png';
+import { MaterialCommunityIcons } from 'react-native-vector-icons';
+//saavutettavuus
+//import { useFontSize } from '../assets/styles/FontSizeContext';
 
 const CustomTopBar = () => {
   const navigation = useNavigation();
@@ -24,6 +27,8 @@ const CustomTopBar = () => {
     setMenuVisible(false);
     navigation.navigate(screenName);
   };
+
+
 
   return (
     <>
@@ -52,7 +57,33 @@ const CustomTopBar = () => {
             titleStyle={globalStyles.appBarTitle}
             style={globalStyles.appBarContainer}
           />
+          
+          <Appbar.Action 
+            icon="format-annotation-minus" 
+            size={36}
+            color="#ffffff"
+            onPress={() => {    
+              console.log("Pienennä fonttia");
+                    Toast.show({
+                      type: "success",
+                      text1: "Pienennä fonttia"
+                    });
+            }} 
+            />
+          <Appbar.Action 
+            icon="format-annotation-plus" 
+            size={36}
+            color="#ffffff"
+            onPress={() => {    
+              console.log("Suurenna fonttia");
+                    Toast.show({
+                      type: "success",
+                      text1: "Suurenna fonttia"
+                    });
+            }} 
+            />
         </Appbar.Header>
+      
       ) : (
 
 
