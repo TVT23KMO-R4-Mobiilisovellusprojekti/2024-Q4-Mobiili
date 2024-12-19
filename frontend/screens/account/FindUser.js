@@ -12,6 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 import globalStyles from "../../assets/styles/Styles.js";
 import Toast from "react-native-toast-message";
 import { deleteUserDataFromFirestore } from "../../services/firestoreUsers.js";
+import { updateUserData } from "../../services/firestoreUsers.js";
 import { signOut, deleteUser } from "firebase/auth";
 import { AuthenticationContext } from "../../context/AuthenticationContext";
 
@@ -76,6 +77,29 @@ const DeleteAccountOfThisUser = () => {
   );
 };
 
+
+const UpdateUsername = () => {
+  const authState = useContext(AuthenticationContext);
+  const username = useContext(username);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const navigation = useNavigation();
+  
+  const usernameChange = async () => {
+    try {
+      await updateUserData(authState.user.id, username);
+      const currentUser = auth.currentUser;
+      console.log("Käyttäjänimi vaihdettu");
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        text1: "Muokkausvirhe",
+        text2: error.message,
+    });
+    }
+  }
+};
+
+
 const LogoutFromThisUser = () => {
   const navigation = useNavigation();
   const authState = useContext(AuthenticationContext);
@@ -85,13 +109,13 @@ const LogoutFromThisUser = () => {
       await signOut(auth); 
       console.log(`UID: ${authState.user.id} uloskirjautui`);
       navigation.navigate("AccountMain");
-    } catch (error) {
+      } catch (error) {
       console.error("Virhe uloskirjautumisessa:", error);
       Alert.alert(
         "Virhe",
         "Uloskirjautumisessa tapahtui virhe. Yritä uudelleen."
       );
-    }
+      }
   };
 
   return <ButtonNavigate title="Kirjaudu ulos" onPress={handleLogout} />;
@@ -122,4 +146,5 @@ export {
   LogoutFromThisUser,
   MessagingSystem,
   AccountSystem,
+  UpdateUsername,
 };

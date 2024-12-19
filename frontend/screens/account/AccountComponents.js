@@ -5,6 +5,7 @@ import { Heading } from "../../components/CommonComponents";
 import {
   DeleteAccountOfThisUser,
   } from "./FindUser";
+import { UpdateUsername } from "../account/AccountUsername";
 import { AuthenticationContext } from "../../context/AuthenticationContext";
 import { useNavigation } from "@react-navigation/native";
 import globalStyles from "../../assets/styles/Styles";
@@ -80,6 +81,14 @@ export const AccountMaintain = () => {
   return (
     <ScrollView contentContainerStyle={{ padding: 8 }}>
       <DeleteAccountOfThisUser />
+    </ScrollView>
+  );
+};
+
+export const AccountUsername = () => {
+  return (
+    <ScrollView contentContainerStyle={{ padding: 8 }}>
+      <UpdateUsername />
     </ScrollView>
   );
 };

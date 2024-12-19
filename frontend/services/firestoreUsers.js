@@ -8,6 +8,7 @@ import {
     doc,
     setDoc,
     getDoc,
+    updateDoc,
     collectionGroup
 } from 'firebase/firestore';
 import { firestore } from './firebaseConfig'; 
@@ -40,7 +41,7 @@ import { get, last, take } from 'lodash';
     export const updateUserData = async (uid, username) => {
         try {
             const userRef = doc(firestore, "users", uid);
-            await setDoc(userRef, { username }, { merge: true });
+            await updateDoc(userRef, { username });
             console.log(`Käyttäjän ${uid} tiedot päivitetty`);
         } catch (error) {
             console.error("Virhe päivitettäessä käyttäjän tietoja:", error);
