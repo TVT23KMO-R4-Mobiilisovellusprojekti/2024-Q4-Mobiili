@@ -3,10 +3,11 @@ import { ScrollView, Button, TextInput } from 'react-native';
 import { Heading, BasicSection } from '../../components/CommonComponents';
 import { updateUserData } from '../../services/firestoreUsers';
 import globalStyles from '../../assets/styles/Styles';
+import GlobalButtons from '../../assets/styles/GlobalButtons';
 import Toast from "react-native-toast-message";
 import { AuthenticationContext } from '../../context/AuthenticationContext';
 import { useNavigation } from '@react-navigation/native';
-
+//import { ButtonChange } from "../../components/Buttons";
 
 export const AccountUsername = () => {
 
@@ -51,18 +52,20 @@ export const AccountUsername = () => {
           onChangeText={setUsername}
           style = {globalStyles.textInput}
         />
+        {"\n\n"}
         {/* ehtolause kun väli ja kysymysmerkki, jos true niin tuo viimeinen osio, elvis-ehtolause*/}
-        
-        <Button 
+        {/* alkup. Button-lauseke:  */}
+          <Button
           title = {isUpdating ? "Päivitetään..." : "Vaihda käyttäjänimi"}
           onPress = {usernameChange}    
           disabled = {isUpdating} 
-        />
-        
+          style = {GlobalButtons.buttonBase}
+          />
       </BasicSection>
     </ScrollView>
   );
 };
 
 export default AccountUsername;
+
 

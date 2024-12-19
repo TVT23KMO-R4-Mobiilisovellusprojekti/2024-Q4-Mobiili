@@ -13,6 +13,18 @@ export const ButtonContinue = ({ title, onPress }) => {
   );
 };
 
+//Käyttäjänimenvaihto
+export const ButtonChange = ({ title, onPress}) => {
+  return (
+    <TouchableOpacity
+      style={[GlobalButtons.buttonBase, GlobalButtons.buttonChange]} 
+      onPress={onPress} 
+    >
+      <Text style={[GlobalButtons.whiteBase, GlobalButtons.size16]}>{title}</Text>
+    </TouchableOpacity>
+  );
+};
+
 export const ButtonNavigate = ({ title, onPress }) => {
   return (
     <TouchableOpacity
